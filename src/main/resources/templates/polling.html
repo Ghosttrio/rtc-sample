@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polling Example</title>
+</head>
+<body>
+<h1>Polling</h1>
+<ul id="messages"></ul>
+
+<script>
+    function startPolling() {
+        setInterval(() => {
+            fetch("/polling")
+                .then(response => response.json())
+                .then(data => {
+                    const li = document.createElement("li");
+                    li.textContent = 'Data ' + data;
+                    document.getElementById('messages').appendChild(li);
+                })
+                .catch(error => console.error('Error:', error));
+        }, 1000); // 1초마다 요청
+    }
+    startPolling();
+</script>
+</body>
+</html>

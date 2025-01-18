@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Example</title>
+</head>
+<body>
+<h1>WebSocket</h1>
+<button onclick="startSending()">Start</button>
+<div id="messages"></div>
+
+<script>
+    const socket = new WebSocket('ws://localhost:8080/ws');
+
+    socket.onopen = function() {
+        console.log("WebSocket connected!");
+    };
+
+    socket.onmessage = function(event) {
+        console.log("Received message: " + event.data);
+        const messagesDiv = document.getElementById("messages");
+        const newMessage = document.createElement("p");
+        newMessage.textContent = event.data;
+        messagesDiv.appendChild(newMessage);
+    };
+
+    socket.onclose = function() {
+        console.log("WebSocket connection closed");
+    };
+
+    socket.onerror = function(error) {
+        console.log("WebSocket error: " + error);
+    };
+
+    // 클라이언트가 "Start Sending Numbers" 버튼을 클릭하면 서버에 "start" 메시지를 보냄
+    function startSending() {
+        if (socket.readyState === WebSocket.OPEN) {
+            socket.send("start");
+        }
+    }
+</script>
+</body>
+</html>
